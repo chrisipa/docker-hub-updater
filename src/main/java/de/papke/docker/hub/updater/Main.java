@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Christoph Papke (info@papke.it)
  */
 @SpringBootApplication
+@SuppressWarnings({"squid:S1118", "squid:S2095"})
 public class Main {
 
     /**
@@ -17,7 +18,7 @@ public class Main {
      *
      * @param args
      */
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Main.class, args); //NOSONAR
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
     }
 }

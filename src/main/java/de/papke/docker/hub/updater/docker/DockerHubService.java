@@ -22,6 +22,11 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for communicating with the docker hub api for updating description texts.
+ *
+ * @author Christoph Papke (info@papke.it)
+ */
 @Service
 public class DockerHubService {
 
