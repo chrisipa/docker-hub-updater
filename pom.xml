@@ -12,17 +12,31 @@
     <name>Docker Hub Updater</name>
     <description>Java program for updating docker image metadata on docker hub.</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.1.RELEASE</version>
     </parent>
+
+    <properties>
+
+        <!-- project encoding properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- dependency versions properties -->
+        <java.version>1.8</java.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <commons-io.version>2.5</commons-io.version>
+        <httpcomponents.version>4.5.3</httpcomponents.version>
+
+        <!-- docker build properties -->
+        <registry>docker.io</registry>
+        <tenant>chrisipa</tenant>
+        <opt.folder>/opt</opt.folder>
+        <app.folder>${opt.folder}/${project.artifactId}</app.folder>
+
+    </properties>
 
     <dependencies>
 
@@ -50,30 +64,84 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <version>${json-simple.version}</version>
         </dependency>
 
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>${httpcomponents.version}</version>
         </dependency>
 
     </dependencies>
 
     <build>
+
         <finalName>${project.artifactId}</finalName>
+
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <registry>${registry}</registry>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/jdk:latest</from>
+                                <optimise>true</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${project.groupId}:${project.artifactId}:${project.packaging}</include>
+                                                </includes>
+                                                <outputDirectory>${app.folder}</outputDirectory>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/docker/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
