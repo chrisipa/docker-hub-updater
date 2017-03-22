@@ -1,7 +1,7 @@
 Docker Hub Updater
 =======
 
-[![Build Status](https://papke.it/jenkins/buildStatus/icon?job=ad-password-handler)](https://papke.it/jenkins/job/docker-hub-updater/)
+[![Build Status](https://papke.it/jenkins/buildStatus/icon?job=docker-hub-updater)](https://papke.it/jenkins/job/docker-hub-updater)
 [![Code Analysis](https://img.shields.io/badge/code%20analysis-available-blue.svg)](https://papke.it/sonar/overview?id=212)
 
 Overview
