@@ -1,0 +1,1 @@
+Spring boot application for updating docker image description texts on docker hub.
