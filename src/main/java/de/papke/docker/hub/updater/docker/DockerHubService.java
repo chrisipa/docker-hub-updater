@@ -82,7 +82,7 @@ public class DockerHubService {
      *
      * @return credentials array for docker hub
      */
-    private String[] getCredentials() {
+    private static String[] getCredentials() {
 
         String[] credentialsArray  = null;
 
