@@ -107,7 +107,7 @@
                                 <tags>
                                     <tag>${project.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk:latest</from>
+                                <from>${registry}/${tenant}/jdk-base:8u66</from>
                                 <optimise>true</optimise>
                                 <entryPoint>
                                     <exec>
