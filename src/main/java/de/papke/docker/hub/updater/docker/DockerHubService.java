@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class for communicating with the docker hub api for updating description texts.
@@ -39,6 +40,7 @@ public class DockerHubService {
     private static final String PASSWORD_PARAMETER = "password"; // NOSONAR
     private static final String DESCRIPTION_PARAMETER = "description";
     private static final String FULL_DESCRIPTION_PARAMETER = "full_description";
+    private static final String AUTHS_FILTER = "docker.io"; 
 
     @Value("${url.prefix}")
     private String urlPrefix;
@@ -100,8 +102,16 @@ public class DockerHubService {
 
                 // get auth entry for index docker io
                 JSONObject auths = (JSONObject) jsonObject.get("auths");
-                JSONObject indexDockerIo = (JSONObject) auths.get("https://index.docker.io/v1/");
-                String auth = (String) indexDockerIo.get("auth");
+                
+                String auth = "";
+                Set<String> keys = auths.keySet();
+                for(String key : keys) {
+                	if(key.contains(AUTHS_FILTER)) {
+                		JSONObject indexDockerIo = (JSONObject) auths.get(key);
+                        auth = (String) indexDockerIo.get("auth");
+                        break;
+                	}
+                }
 
                 // base64 decoding for auth string
                 String credentials = new String(Base64.getDecoder().decode(auth));
