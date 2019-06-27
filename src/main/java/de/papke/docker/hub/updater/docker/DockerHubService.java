@@ -98,10 +98,10 @@ public class DockerHubService {
                 // parse json from user home config file
                 JSONObject jsonObject = (JSONObject) JSON_PARSER.parse(new FileReader(dockerCredentialsFile));
 
-                // get auth entry for docker io
+                // get auth entry for index docker io
                 JSONObject auths = (JSONObject) jsonObject.get("auths");
-                JSONObject dockerIo = (JSONObject) auths.get("docker.io");
-                String auth = (String) dockerIo.get("auth");
+                JSONObject indexDockerIo = (JSONObject) auths.get("https://index.docker.io/v1/");
+                String auth = (String) indexDockerIo.get("auth");
 
                 // base64 decoding for auth string
                 String credentials = new String(Base64.getDecoder().decode(auth));
