@@ -108,8 +108,8 @@ public class DockerHubService {
                 for(String key : keys) {
                 	if(key.contains(AUTHS_FILTER)) {
                 		JSONObject indexDockerIo = (JSONObject) auths.get(key);
-                        auth = (String) indexDockerIo.get("auth");
-                        break;
+                        	auth = (String) indexDockerIo.get("auth");
+                        	break;
                 	}
                 }
 
