@@ -103,14 +103,14 @@ public class DockerHubService {
                 // get auth entry for index docker io
                 JSONObject auths = (JSONObject) jsonObject.get("auths");
                 
-                String auth = "";
+                String auth = null;
                 Set<String> keys = auths.keySet();
                 for(String key : keys) {
-                	if(key.contains(AUTHS_FILTER)) {
-                		JSONObject indexDockerIo = (JSONObject) auths.get(key);
-                        	auth = (String) indexDockerIo.get("auth");
-                        	break;
-                	}
+              	    if(key.contains(AUTHS_FILTER)) {
+                        JSONObject dockerIo = (JSONObject) auths.get(key);
+                        auth = (String) dockerIo.get("auth");
+                        break;
+                    }
                 }
 
                 // base64 decoding for auth string
